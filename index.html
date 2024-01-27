@@ -31,6 +31,7 @@
         align-items: center;
         flex-direction: column;
       }
+
       .main-title {
         color: whitesmoke;
         text-align: center;
@@ -54,6 +55,7 @@
 
       #inputlist {
         margin-right: 10px;
+        width: 350px;
       }
 
       #main-box {
@@ -67,7 +69,7 @@
       }
 
       #card-box {
-        width: 500px;
+        width: 600px;
         margin: 20px;
       }
 
@@ -79,6 +81,7 @@
         display: flex;
         justify-content: space-between;
         background-color: rgb(255, 255, 255);
+        border-radius: 5px;
       }
 
       .done-btn {
@@ -90,25 +93,42 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
       function inputToDo() {
+        $(document).ready(function () {
+          var cardCount = 0;
+
+          // 버튼 클릭 이벤트
+          $("#addCardBtn").on("click", function () {
+            cardCount++;
+
+            // 새로운 카드 생성 및 숫자 추가
+            var newCard = $("<div>")
+              .addClass("card")
+              .text("카드 " + cardCount);
+            $("#cardContainer").append(newCard);
+          });
+        });
+
         let toDoValue = $("#inputlist").val();
         if (toDoValue == "") {
           alert("입력해줘야즤?");
         } else {
+          let cardCount = 0;
           let temp_html = ` <div class="card">
-                              <div class="card-body">
-                                <p class="listText">${toDoValue}</p>
-                                <div>
-                                <button
-                                  type="button" id="done-btn"
-                                  class="btn btn-sm btn-outline-dark"
-                                  onclick="doneToDo()"
-                                >
-                                  I'm 완료
-                                </button>
-                                <button id="delete-btn" class="btn btn-sm btn-outline-dark" onclick="deletebtn()">I'm 삭제</button>
-                                </div>
-                                </div>
-                            </div>`;
+                                  <div class="card-body">
+                                    <p class="listText">${toDoValue}</p>
+                                    <div>
+                                    <button
+                                      type="button" id="done-btn"
+                                      class="btn btn-sm btn-outline-dark"
+                                      onclick="doneToDo()"
+                                    >
+                                      I'm 완료
+                                    </button>
+                                    <button id="delete-btn" class="btn btn-sm btn-outline-dark" onclick="deletebtn()">I'm 삭제</button>
+                                    </div>
+                                    </div>
+                                </div>`;
+          cardCount++;
           $("#card-box").append(temp_html);
           $("#inputlist").val("");
         }
@@ -121,8 +141,11 @@
 
       function doneToDo() {
         alert("👏👏👏참 잘했어요!!");
-
-        $(this > "#delete-btn").remove();
+        $(document).on("click", "#done-btn", function () {
+          $(this).closest(".card-body").css("background-color", "#1c8755");
+          $(this).closest(".card-body").css("font-weight", "bold");
+          $(this).closest("#done-btn").remove();
+        });
       }
     </script>
   </head>
